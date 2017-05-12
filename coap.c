@@ -180,7 +180,9 @@ coap_state_t coap_make_request(const uint16_t msgid,
 
 coap_state_t coap_make_ack(const coap_packet_t *inpkt, coap_packet_t *pkt)
 {
+#if YACOAP_DEBUG
     printf("coap_make_ack\n");
+#endif
     return coap_make_response(inpkt->hdr.id, &inpkt->tok,
                               COAP_TYPE_ACK, COAP_RSPCODE_EMPTY,
                               NULL, NULL, 0, pkt);
