@@ -3,6 +3,8 @@
 #include <string.h>
 #include "coap.h"
 
+#define SERVICE "CoAPS"
+
 static char light = '0';
 const uint16_t rsplen = 128;
 static char rsp[128] = "";
@@ -11,7 +13,7 @@ void resource_setup(const coap_resource_t *resources)
 {
     coap_make_link_format(resources, rsp, rsplen);
 #if YACOAP_DEBUG
-    printf("resources: %s\n", rsp);
+    printf("%s resources: %s\n", SERVICE, rsp);
 #endif
 }
 
@@ -21,7 +23,7 @@ static int handle_get_well_known_core(const coap_resource_t *resource,
                                       coap_packet_t *pkt)
 {
 #if YACOAP_DEBUG
-    printf("handle_get_well_known_core\n");
+    printf("%s: handle_get: well_known_core\n", SERVICE);
 #endif
     return coap_make_response(inpkt->hdr.id, &inpkt->tok,
                               COAP_TYPE_ACK, COAP_RSPCODE_CONTENT,
@@ -36,7 +38,7 @@ static int handle_get_light(const coap_resource_t *resource,
                             coap_packet_t *pkt)
 {
 #if YACOAP_DEBUG
-    printf("handle_get_light\n");
+    printf("%s: handle_get: light\n", SERVICE);
 #endif
     return coap_make_response(inpkt->hdr.id, &inpkt->tok,
                               COAP_TYPE_ACK, COAP_RSPCODE_CONTENT,
@@ -50,7 +52,7 @@ static int handle_put_light(const coap_resource_t *resource,
                             coap_packet_t *pkt)
 {
 #if YACOAP_DEBUG
-    printf("handle_put_light\n");
+    printf("%s: handle_put_light\n", SERVICE);
 #endif
     if (inpkt->payload.len == 0) {
         return coap_make_response(inpkt->hdr.id, &inpkt->tok,
@@ -61,13 +63,13 @@ static int handle_put_light(const coap_resource_t *resource,
     if (inpkt->payload.p[0] == '1') {
         light = '1';
 #if YACOAP_DEBUG
-        printf("Light ON\n");
+        printf("%s: Light ON\n", SERVICE);
 #endif
     }
     else {
         light = '0';
 #if YACOAP_DEBUG
-        printf("Light OFF\n");
+        printf("%s: Light OFF\n", SERVICE);
 #endif
     }
     return coap_make_response(inpkt->hdr.id, &inpkt->tok,

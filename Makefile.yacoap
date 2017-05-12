@@ -1,1 +1,1 @@
-yacoap_src = coap.c coap_parse.c resources.c
+yacoap_src = coap.c coap_dump.c coap_parse.c resources.c
