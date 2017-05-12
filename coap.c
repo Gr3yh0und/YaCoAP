@@ -4,7 +4,11 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stddef.h>
+#if HAVE_ARPA_INET_H
 #include <arpa/inet.h>
+#else
+#include "inet.h"
+#endif
 
 #include "coap.h"
 
