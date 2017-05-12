@@ -1,0 +1,7 @@
+MODULE += yacoap
+
+LDFLAGS = -shared
+
+SRC := coap.c coap_parse.c resources.c
+
+include $(RIOTBASE)/Makefile.base
