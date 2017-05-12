@@ -1,0 +1,1 @@
+yacoap_src = coap.c coap_parse.c resources.c
