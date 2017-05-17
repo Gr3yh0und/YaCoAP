@@ -3,6 +3,19 @@
 #include <string.h>
 #include "coap.h"
 
+#ifdef YACOAP_LEDS_ENABLED
+#include "leds.h"
+#endif
+
+#ifdef OPENTHREAD_ACTIVE
+#include "openthread/platform/alarm.h"
+#include "openthread/platform/logging.h"
+#endif
+
+#if OPENTHREAD_ENABLE_COAPS_CLI == 0
+#define otPlatLog(...)
+#endif
+
 #define SERVICE "CoAPS"
 
 static char light = '0';
@@ -13,7 +26,11 @@ void resource_setup(const coap_resource_t *resources)
 {
     coap_make_link_format(resources, rsp, rsplen);
 #if YACOAP_DEBUG
+#ifdef OPENTHREAD_ACTIVE
+    otPlatLog(kLogLevelDebg, kLogRegionPlatform, "%d(%s): resources = %s", otPlatAlarmGetNow(), SERVICE, rsp);
+#else
     printf("%s resources: %s\n", SERVICE, rsp);
+#endif
 #endif
 }
 
@@ -62,12 +79,18 @@ static int handle_put_light(const coap_resource_t *resource,
     }
     if (inpkt->payload.p[0] == '1') {
         light = '1';
+#ifdef YACOAP_LEDS_ENABLED
+        LED0_ON;
+#endif
 #if YACOAP_DEBUG
         printf("%s: Light ON\n", SERVICE);
 #endif
     }
     else {
         light = '0';
+#ifdef YACOAP_LEDS_ENABLED
+        LED0_OFF;
+#endif
 #if YACOAP_DEBUG
         printf("%s: Light OFF\n", SERVICE);
 #endif
