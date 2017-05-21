@@ -4,7 +4,7 @@
 #include "coap.h"
 
 #ifdef YACOAP_LEDS_ENABLED
-#include "gpio.h"
+#include "gpio2.h"
 #endif
 
 #ifdef OPENTHREAD_ACTIVE
