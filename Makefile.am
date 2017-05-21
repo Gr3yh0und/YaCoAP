@@ -14,10 +14,10 @@ libyacoap_a_CPPFLAGS = \
 libyacoap_a_SOURCES  = \
                           coap.c                          \
                           coap_parse.c                    \
-			  coap_dump.c                     \
+                          coap_dump.c                     \
                           resources.c                     \
                           $(NULL)
-
+                          
 noinst_HEADERS          =  \
                            coap.h          \
                            inet.h          \

@@ -4,7 +4,7 @@
 #include "coap.h"
 
 #ifdef YACOAP_LEDS_ENABLED
-#include "leds.h"
+#include "gpio.h"
 #endif
 
 #ifdef OPENTHREAD_ACTIVE
@@ -79,7 +79,7 @@ static int handle_put_light(const coap_resource_t *resource,
     }
     if (inpkt->payload.p[0] == '1') {
         light = '1';
-#ifdef YACOAP_LEDS_ENABLED
+#if YACOAP_LEDS_ENABLED
         LED0_ON;
 #endif
 #if YACOAP_DEBUG
@@ -88,7 +88,7 @@ static int handle_put_light(const coap_resource_t *resource,
     }
     else {
         light = '0';
-#ifdef YACOAP_LEDS_ENABLED
+#if YACOAP_LEDS_ENABLED
         LED0_OFF;
 #endif
 #if YACOAP_DEBUG
