@@ -3,9 +3,7 @@
 #include <string.h>
 #include "coap.h"
 
-#if defined(YACOAP_LEDS_ENABLED)
 #include "measurement.h"
-#endif
 
 #ifdef OPENTHREAD_ACTIVE
 #include "openthread/platform/alarm.h"
