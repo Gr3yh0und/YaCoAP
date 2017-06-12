@@ -3,16 +3,8 @@
 #include <string.h>
 #include "coap.h"
 
-#if defined(YACOAP_LEDS_ENABLED) && OPENTHREAD_ENABLE_COAPS
-#include "gpio.h"
-#endif
-
-#if defined(YACOAP_LEDS_ENABLED) && defined(CONTIKI)
-#include "leds.h"
-#undef LED0_ON
-#define LED0_ON GPIO_SET_PIN(GPIO_C_BASE, LEDS_RED)
-#undef LED0_OFF
-#define LED0_OFF GPIO_CLR_PIN(GPIO_C_BASE, LEDS_RED)
+#if defined(YACOAP_LEDS_ENABLED)
+#include "measurement.h"
 #endif
 
 #ifdef OPENTHREAD_ACTIVE
