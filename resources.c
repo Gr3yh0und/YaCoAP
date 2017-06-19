@@ -3,7 +3,13 @@
 #include <string.h>
 #include "coap.h"
 
+#ifdef GPIO_OUTPUT_ENABLE_LEDS
+#ifdef RIOT_VERSION
+#include "../../../../measurement.h"
+#else
 #include "measurement.h"
+#endif
+#endif
 
 #ifdef OPENTHREAD_ACTIVE
 #include "openthread/platform/alarm.h"
@@ -14,7 +20,7 @@
 #define otPlatLog(...)
 #endif
 
-#define SERVICE "CoAPS"
+#define SERVICE "CoAPs"
 
 static char light = '0';
 const uint16_t rsplen = 128;
@@ -23,7 +29,7 @@ static char rsp[128] = "";
 void resource_setup(const coap_resource_t *resources)
 {
     coap_make_link_format(resources, rsp, rsplen);
-#if YACOAP_DEBUG
+#ifdef YACOAP_DEBUG
 #ifdef OPENTHREAD_ACTIVE
     otPlatLog(kLogLevelDebg, kLogRegionPlatform, "%d(%s): resources = %s", otPlatAlarmGetNow(), SERVICE, rsp);
 #else
@@ -37,7 +43,7 @@ static int handle_get_well_known_core(const coap_resource_t *resource,
                                       const coap_packet_t *inpkt,
                                       coap_packet_t *pkt)
 {
-#if YACOAP_DEBUG
+#ifdef YACOAP_DEBUG
     printf("%s: handle_get: well_known_core\n", SERVICE);
 #endif
     return coap_make_response(inpkt->hdr.id, &inpkt->tok,
@@ -52,7 +58,7 @@ static int handle_get_light(const coap_resource_t *resource,
                             const coap_packet_t *inpkt,
                             coap_packet_t *pkt)
 {
-#if YACOAP_DEBUG
+#ifdef YACOAP_DEBUG
     printf("%s: handle_get: light\n", SERVICE);
 #endif
     return coap_make_response(inpkt->hdr.id, &inpkt->tok,
@@ -66,7 +72,7 @@ static int handle_put_light(const coap_resource_t *resource,
                             const coap_packet_t *inpkt,
                             coap_packet_t *pkt)
 {
-#if YACOAP_DEBUG
+#ifdef YACOAP_DEBUG
     printf("%s: handle_put_light\n", SERVICE);
 #endif
     if (inpkt->payload.len == 0) {
@@ -77,19 +83,19 @@ static int handle_put_light(const coap_resource_t *resource,
     }
     if (inpkt->payload.p[0] == '1') {
         light = '1';
-#if YACOAP_LEDS_ENABLED
-        LED0_ON;
+#ifdef GPIO_OUTPUT_ENABLE_LEDS
+        NEW_LED1_ON;
 #endif
-#if YACOAP_DEBUG
+#ifdef YACOAP_DEBUG
         printf("%s: Light ON\n", SERVICE);
 #endif
     }
     else {
         light = '0';
-#if YACOAP_LEDS_ENABLED
-        LED0_OFF;
+#ifdef GPIO_OUTPUT_ENABLE_LEDS
+        NEW_LED1_OFF;
 #endif
-#if YACOAP_DEBUG
+#ifdef YACOAP_DEBUG
         printf("%s: Light OFF\n", SERVICE);
 #endif
     }
