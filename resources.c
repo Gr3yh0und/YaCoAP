@@ -53,7 +53,7 @@ static int handle_get_well_known_core(const coap_resource_t *resource,
                               pkt);
 }
 
-static const coap_resource_path_t path_light = {1, {"light"}};
+static const coap_resource_path_t path_light = {1, {"status"}};
 static int handle_get_light(const coap_resource_t *resource,
                             const coap_packet_t *inpkt,
                             coap_packet_t *pkt)
